@@ -2,9 +2,15 @@ import { ADD_REMINDER, DELETE_REMINDER } from '../constants';
 
 const reminder = (action) => {
   return {
+    id: Math.random(),
     text: action.text,
-    id: Math.random()
+    dueDate: action.dueDate
   }
+}
+
+const removeById = (state = [], id) => {
+  const reminders = state.filter(reminder => reminder.id !== id);
+  return reminders;
 }
 
 const reminders = (state = [], action) => {
@@ -14,7 +20,7 @@ const reminders = (state = [], action) => {
       reminders = [...state, reminder(action)]
       return reminders;
     case DELETE_REMINDER:
-      reminders = [...state, reminder(action)]
+      reminders = removeById(state, action.id);
       return reminders;
     default:
       return state;

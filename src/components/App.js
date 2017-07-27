@@ -7,12 +7,17 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      text: ''
+      text: '',
+      dueDate: ''
     };
   }
 
   addReminder() {
-    this.props.addReminder(this.state.text);
+    this.props.addReminder(this.state.text, this.state.dueDate);
+  }
+
+  deleteReminder(id){
+    this.props.deleteReminder(id);
   }
 
   renderReminders() {
@@ -24,7 +29,9 @@ class App extends Component {
             return (
               <li key={reminder.id} className="list-group-item">
                 <div className="list-item">{reminder.text}</div>
-                <div className="list-item delete-button">
+                <div className="list-item delete-button"
+                  onClick = {() => this.deleteReminder(reminder.id)}
+                  >
                   &#x2715;
                 </div>
               </li>
@@ -47,6 +54,11 @@ class App extends Component {
               className="form-control"
               placeholder="I have to..."
               onChange = {event => this.setState({text: event.target.value})}
+            />
+            <input
+              className="form-control"
+              type="datetime-local"
+              onChange = {event => this.setState({dueDate: event.target.value})}
             />
             <button
               className="btn btn-success"
@@ -72,4 +84,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps, {addReminder})(App);
+export default connect(mapStateToProps, {addReminder, deleteReminder})(App);
